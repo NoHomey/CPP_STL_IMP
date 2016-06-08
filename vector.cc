@@ -25,7 +25,9 @@ public:
     T& operator[](const unsigned n) {
         if(n >= _size) {
             throw std::out_of_range("N must be in range from 0 to size()\n");
-        } else return _buffer[n];
+        } else {
+            return _buffer[n];
+        }
     }
 
     const T& operator[](const unsigned n) const {
@@ -292,36 +294,37 @@ vector<int> construct(int first, int last) {
 
 int main(int argc, char** argv) {
     vector<int> v1 = construct(std::atoi(argv[1]), std::atoi(argv[2]));
-	vector<int> v2 = construct(std::atoi(argv[3]), std::atoi(argv[4]));
-	std::cout << "v1: " << v1 << std::endl;
-	std::cout << "v2: " << v2 << std::endl;
-	unsigned count = 0;
-	for(vector<int>::iterator it1 = v1.begin();it1 != v1.end();++it1) {
-		for(vector<int>::iterator it2 = v2.begin();it2 != v2.end();++it2) {
-			if(*it1 == *it2) {
-				count++;
-				break;
-			}
-		}
-	}
-	std::cout << "equal element in v1 and v2: " << count << std::endl;
-	v1.push_back(-100);
-	v2.push_back(-100);
-	std::cout << "v1: " << v1 << std::endl;
-	std::cout << "v2: " << v2 << std::endl;
-	vector<int> v(v2);
-	std::cout << "v: " << v << std::endl;
-	for(vector<int>::reverse_iterator rit = v1.rbegin();rit != v1.rend();++rit) {
+    vector<int> v2 = construct(std::atoi(argv[3]), std::atoi(argv[4]));
+    std::cout << "v1: " << v1 << std::endl;
+    std::cout << "v2: " << v2 << std::endl;
+    unsigned count = 0;
+    for(vector<int>::iterator it1 = v1.begin();it1 != v1.end();++it1) {
+        for(vector<int>::iterator it2 = v2.begin();it2 != v2.end();++it2) {
+            if(*it1 == *it2) {
+                count++;
+                break;
+            }
+        }
+    }
+    std::cout << "equal element in v1 and v2: " << count << std::endl;
+    v1.push_back(-100);
+    v2.push_back(-100);
+    std::cout << "v1: " << v1 << std::endl;
+    std::cout << "v2: " << v2 << std::endl;
+    vector<int> v(v2);
+    std::cout << "v: " << v << std::endl;
+    for(vector<int>::reverse_iterator rit = v1.rbegin();rit != v1.rend();++rit) {
         v.insert(v.begin(), *rit);
     }
-	std::cout << "v: " << v << std::endl;
-	vector<int>::iterator bit = v.begin();
-	for(;bit != v.end();++bit) {
-		if(*bit == -100)
-			break;
-	}
-	v.erase(bit, v.end());
-	v.erase(++++v.begin());
-	std::cout << "v: " << v << std::endl;
-	return 0;
+    std::cout << "v: " << v << std::endl;
+    vector<int>::iterator bit = v.begin();
+    for(;bit != v.end();++bit) {
+        if(*bit == -100) {
+            break;
+        }
+    }
+    v.erase(bit, v.end());
+    v.erase(++++v.begin());
+    std::cout << "v: " << v << std::endl;
+    return 0;
 }
