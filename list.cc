@@ -130,7 +130,7 @@ public:
             return &operator*();
         }
 
-        struct node* node(void) {
+        struct node* node(void) const {
             return _node;
         }
     };
@@ -204,34 +204,33 @@ public:
         return const_reverse_iterator();
     }
 
-    iterator insert(iterator position, const T& data) {
+    iterator insert(const iterator& position, const T& data) {
         struct node* current = position.node();
+        struct node* node = new struct node(data);
         if(current) {
             struct node* before = current->prev;
-            struct node* node = new struct node(data, before, current);
+            node->prev = before;
+            node->next = current;
             current->prev = node;
             if(before) {
                 before->next = node;
             } else {
                 _head = node;
             }
-            return iterator(node);
         } else {
             if(empty()) {
-                struct node* node = new struct node(data);
                 _head = node;
                 _tail = node;
-                return begin();
             } else {
-                struct node* node = new struct node(data, _tail);
+                node->prev = _tail;
                 _tail->next = node;
                 _tail = node;
-                return iterator(node);
             }
         }
+        return iterator(node);
     }
 
-    iterator erase(iterator position) {
+    iterator erase(const iterator& position) {
         if(empty()) {
             throw std::length_error("list is empty!\n");
         } else {
@@ -254,7 +253,7 @@ public:
         }
     }
 
-    iterator erase(iterator first, iterator last) {
+    iterator erase(const iterator& first, const iterator& last) {
         iterator it = first;
         while(it != last) {
             it = erase(it);
