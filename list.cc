@@ -32,11 +32,19 @@ public:
     }
 
     void pop_back(void) {
-        erase(iterator(rbegin().node()));
+        if(empty()) {
+            throw std::length_error("list is empty!\n");
+        } else {
+            erase(iterator(rbegin().node()));
+        }
     }
 
     void pop_front(void) {
-        erase(begin());
+        if(empty()) {
+            throw std::length_error("list is empty!\n");
+        } else {
+            erase(begin());
+        }
     }
 
     T& front(void) {
@@ -231,26 +239,22 @@ public:
     }
 
     iterator erase(const iterator& position) {
-        if(empty()) {
-            throw std::length_error("list is empty!\n");
+        struct node* current = position.node();
+        struct node* before = current->prev;
+        struct node* after = current->next;
+        if(current == _head) {
+            _head = after;
         } else {
-            struct node* current = position.node();
-            struct node* before = current->prev;
-            struct node* after = current->next;
-            if(current == _head) {
-                _head = after;
-            } else {
-                before->next = after;
-            }
-            if(current == _tail) {
-                _tail = before;
-            } else {
-                after->prev = before;
-            }
-            delete current;
-
-            return iterator(after);
+            before->next = after;
         }
+        if(current == _tail) {
+            _tail = before;
+        } else {
+            after->prev = before;
+        }
+        delete current;
+
+        return iterator(after);
     }
 
     iterator erase(const iterator& first, const iterator& last) {
